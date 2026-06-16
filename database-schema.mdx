@@ -42,13 +42,29 @@ Application permission roles definitions.
 
 Application role permission assignments.
 
-### auth\_providers
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| app\_role\_id | UUID |  | app\_roles(id) | ✅ |  |  |
+| app\_perm\_id | UUID |  | app\_perms(id) | ✅ |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+
+### auth\_provider\_configs
 
 Authentication providers.
 
-### auth\_configs
-
-Authentication provider configurations.
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| name | TEXT |  |  | ✅ | ✅ |  |
+| provider\_type | SMALLINT |  |  | ✅ |  |  |
+| is\_active | BOOLEAN |  |  | ✅ |  | true |
+| config | JSONB |  |  | ✅ |  | {} |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
 
 ### git\_providers
 
@@ -62,17 +78,58 @@ GIt provider configurations.
 
 Organizations
 
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| parent\_id | UUID |  | orgs(id) |  |  |  |
+| name | TEXT |  |  | ✅ | ✅ |  |
+| slug | TEXT |  |  |  |  |  |
+| is\_active | BOOLEAN |  |  | ✅ |  | true |
+| mappings | JSONB |  |  | ✅ |  | {} |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+
 ### org\_perms
 
 Organization permissions.
+
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| name | TEXT |  |  | ✅ | ✅ |  |
+| description | TEXT |  |  |  |  |  |
+| is\_active | BOOLEAN |  |  | ✅ |  | true |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
 
 ### org\_roles
 
 Organization permission roles.
 
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| name | TEXT |  |  | ✅ | ✅ |  |
+| description | TEXT |  |  |  |  |  |
+| is\_active | BOOLEAN |  |  | ✅ |  | true |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+
 ### org\_role\_perms
 
 Organization role permission assignments.
+
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| org\_role\_id | UUID |  | org\_roles(id) | ✅ |  |  |
+| org\_perm\_id | UUID |  | org\_perms(id) | ✅ |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
 
 ### org\_tags
 
@@ -82,25 +139,99 @@ Organization tag assignments.
 
 Organization user assignments.
 
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| org\_id | UUID |  | orgs(id) | ✅ |  |  |
+| user\_id | UUID |  | users(id) | ✅ |  |  |
+| org\_role\_id | UUID |  | org\_roles(id) | ✅ |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+
 ### org\_variables
 
 Organization variables.
+
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| org\_id | UUID |  | orgs(id) | ✅ |  |  |
+| var\_type | SMALLINT |  |  | ✅ |  |  |
+| name | TEXT |  |  | ✅ |  |  |
+| value | TEXT |  |  |  |  |  |
+| secret | BYTEA |  |  |  |  |  |
+| is\_default | BOOLEAN |  |  | ✅ | ✅ | false |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
 
 ### tags
 
 Tag definitions to be used across the application.
 
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| tag\_type | SMALLINT |  |  | ✅ |  |  |
+| name | TEXT |  |  | ✅ | ✅ |  |
+| color | TEXT |  |  | ✅ |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+
 ### users
 
-Users
+Users.
+
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| email | TEXT |  |  | ✅ | ✅ |  |
+| name | TEXT |  |  | ✅ |  |  |
+| password | TEXT |  |  | ✅ |  |  |
+| is\_mfa\_enabled | BOOLEAN |  |  | ✅ |  | false |
+| mfa\_secret | BYTEA |  |  |  |  |  |
+| mfa\_recovery\_codes | BYTEA |  |  |  |  |  |
+| mfa\_recovery\_codes\_remaining | SMALLINT |  |  |  |  |  |
+| is\_active | BOOLEAN |  |  | ✅ |  | true |
+| preferences | JSONB |  |  | ✅ |  | {} |
+| app\_role\_id | UUID |  | app\_roles(id) | ✅ |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
 
 ### user\_auth\_providers
 
 User auth provider assignments.
 
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| user\_id | UUID |  | users(id) | ✅ |  |  |
+| auth\_provider\_id | UUID |  | auth\_providers(id) | ✅ |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+
 ### workflows
 
 Workflow definitions.
+
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| rev\_id | UUID |  |  | ✅ | ✅ | gen\_random\_uuid() |
+| org\_id | UUID |  | orgs(id) | ✅ |  |  |
+| org\_vars | JSONB |  |  | ✅ |  | {} |
+| triggers | JSONB |  |  | ✅ |  | {} |
+| nodes | JSONB |  |  | ✅ |  | {} |
+| edges | JSONB |  |  | ✅ |  | {} |
+| status | SMALLINT |  |  | ✅ |  |  |
+| workflow\_folder\_id | UUID |  | workflow\_folders(id) | ✅ |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
 
 ### workflow\_execs
 
@@ -110,16 +241,65 @@ Workflow execution history.
 
 Workflow project folders.
 
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| parent\_id | UUID |  | workflow\_folders(id) | ✅ |  |  |
+| org\_id | UUID |  | orgs(id) | ✅ |  |  |
+| name | TEXT |  |  | ✅ |  |  |
+| path | TEXT |  |  | ✅ |  |  |
+| color | TEXT |  |  | ✅ |  |  |
+| icon | TEXT |  |  | ✅ |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+
 ### workflow\_projects
 
 Workflow projects.
+
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| project\_type | SMALLINT |  |  | ✅ |  |  |
+| org\_id | UUID |  | orgs(id) |  |  |  |
+| user\_id | UUID |  | users(id) |  |  |  |
+| name | TEXT |  |  | ✅ |  |  |
+| description | TEXT |  |  |  |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
 
 ### workflow\_revs
 
 Workflow revision history.
 
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| workflow\_id | UUID |  | workflow(id) | ✅ |  | gen\_random\_uuid() |
+| org\_id | UUID |  | orgs(id) | ✅ |  |  |
+| org\_vars | JSONB |  |  | ✅ |  | {} |
+| triggers | JSONB |  |  | ✅ |  | {} |
+| nodes | JSONB |  |  | ✅ |  | {} |
+| edges | JSONB |  |  | ✅ |  | {} |
+| status | SMALLINT |  |  | ✅ |  |  |
+| workflow\_folder\_id | UUID |  | workflow\_folders(id) | ✅ |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+
 ### workflow\_tags
 
 Workflow tag assignments.
+
+| Column | Type | PK | FK | Required | Unique | Default |
+| :-- | :-- | :-- | :-- | :-- | :-- | :-- |
+| id | UUID | ✅ |  | ✅ | ✅ | gen\_random\_uuid() |
+| workflow\_id | UUID |  | workflows(id) | ✅ |  |  |
+| tag\_id | UUID |  | tags(id) | ✅ |  |  |
+| metadata | JSONB |  |  | ✅ |  | {} |
+| created\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
+| updated\_at | TIMESTAMPTZ |  |  | ✅ |  | now() |
 
 ## Diagram
