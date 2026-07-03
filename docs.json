@@ -14,19 +14,19 @@
   "navigation": {
     "pages": [
       {
+        "group": "Design",
+        "hidden": true,
+        "pages": [
+          "database-schema",
+          "environment-variables"
+        ]
+      },
+      "overview",
+      {
         "group": "Getting Started",
         "pages": [
           "index",
           "quickstart"
-        ]
-      }
-    ],
-    "groups": [
-      {
-        "group": "Design",
-        "pages": [
-          "database-schema",
-          "environment-variables"
         ]
       }
     ]
